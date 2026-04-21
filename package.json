@@ -1,0 +1,29 @@
+{
+  "name": "ctop",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "format": "prettier --write .",
+    "typecheck": "tsc --noEmit",
+    "generate-icons": "pwa-assets-generator --preset minimal-2023 public/pwa-icon.svg"
+  },
+  "dependencies": {
+    "idb": "^8.0.3"
+  },
+  "devDependencies": {
+    "@vite-pwa/assets-generator": "^0.2.6",
+    "fake-indexeddb": "^6.0.1",
+    "jsdom": "^29.0.2",
+    "prettier": "^3.4.2",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.3",
+    "vite-plugin-pwa": "^0.21.1",
+    "vitest": "^2.1.8"
+  }
+}
