@@ -8,7 +8,6 @@ import { showToast } from './toast'
 
 export interface EditorHandle {
   dispose(): void
-  pasteFromClipboard(): Promise<void>
 }
 
 export async function renderEditor(root: HTMLElement, folderId: string): Promise<EditorHandle> {
@@ -16,7 +15,7 @@ export async function renderEditor(root: HTMLElement, folderId: string): Promise
   if (!folder) {
     showToast('フォルダが見つかりません', 'error')
     navigate({ name: 'list' })
-    return { dispose: () => {}, pasteFromClipboard: async () => {} }
+    return { dispose: () => {} }
   }
 
   root.innerHTML = `
@@ -24,7 +23,7 @@ export async function renderEditor(root: HTMLElement, folderId: string): Promise
       <button type="button" class="btn-ghost" id="btn-back" aria-label="戻る">‹ 戻る</button>
       <button type="button" class="folder-title" id="folder-title"></button>
       <span class="save-indicator" id="save-indicator" aria-live="polite"></span>
-      <button type="button" class="btn-menu" id="btn-menu" aria-label="メニュー">⋯</button>
+      <button type="button" class="btn-menu" id="btn-export" aria-label="エクスポート">⬇</button>
     </header>
     <main class="app-main editor-main">
       <textarea id="editor" spellcheck="false" placeholder="ここにテキストを入力・ペーストしてください…"></textarea>
@@ -39,7 +38,7 @@ export async function renderEditor(root: HTMLElement, folderId: string): Promise
   const backBtn = root.querySelector<HTMLButtonElement>('#btn-back')!
   const indicator = root.querySelector<HTMLElement>('#save-indicator')!
   const pasteBtn = root.querySelector<HTMLButtonElement>('#btn-paste')!
-  const menuBtn = root.querySelector<HTMLButtonElement>('#btn-menu')!
+  const exportBtn = root.querySelector<HTMLButtonElement>('#btn-export')!
 
   titleBtn.textContent = folder.name
   textarea.value = folder.content
@@ -63,10 +62,6 @@ export async function renderEditor(root: HTMLElement, folderId: string): Promise
   })
 
   pasteBtn.addEventListener('click', async () => {
-    await pasteFromClipboard()
-  })
-
-  async function pasteFromClipboard(): Promise<void> {
     const result = await readClipboard()
     switch (result.kind) {
       case 'ok': {
@@ -89,38 +84,31 @@ export async function renderEditor(root: HTMLElement, folderId: string): Promise
         showToast(`読み取りに失敗しました: ${result.message}`, 'error', 4000)
         break
     }
-  }
+  })
 
-  async function renameFolder(): Promise<void> {
+  titleBtn.addEventListener('click', async () => {
     const name = await openPrompt({
       title: '名前を変更',
-      defaultValue: folder!.name,
+      defaultValue: folder.name,
       okLabel: '変更',
     })
     if (!name) return
     await updateFolder(folderId, { name })
-    folder!.name = name
+    folder.name = name
     titleBtn.textContent = name
-  }
+  })
 
-  titleBtn.addEventListener('click', renameFolder)
-
-  menuBtn.addEventListener('click', async () => {
-    await openEditorMenu({
-      onExport: async () => {
-        await autosaver.flush()
-        const latest = await getFolder(folderId)
-        if (!latest) return
-        try {
-          const result = await exportFolder(latest)
-          if (!result.shared) showToast('Markdown をダウンロードしました')
-        } catch (err) {
-          const msg = err instanceof Error ? err.message : String(err)
-          showToast(`エクスポート失敗: ${msg}`, 'error', 4000)
-        }
-      },
-      onRename: renameFolder,
-    })
+  exportBtn.addEventListener('click', async () => {
+    await autosaver.flush()
+    const latest = await getFolder(folderId)
+    if (!latest) return
+    try {
+      const result = await exportFolder(latest)
+      if (!result.shared) showToast('Markdown をダウンロードしました')
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err)
+      showToast(`エクスポート失敗: ${msg}`, 'error', 4000)
+    }
   })
 
   const onBeforeUnload = (): void => {
@@ -134,43 +122,7 @@ export async function renderEditor(root: HTMLElement, folderId: string): Promise
       window.removeEventListener('beforeunload', onBeforeUnload)
       void autosaver.flush()
     },
-    pasteFromClipboard,
   }
-}
-
-interface EditorMenuActions {
-  onExport(): Promise<void> | void
-  onRename(): Promise<void> | void
-}
-
-function openEditorMenu(actions: EditorMenuActions): Promise<void> {
-  return new Promise((resolve) => {
-    const overlay = document.createElement('div')
-    overlay.className = 'sheet-overlay'
-    overlay.innerHTML = `
-      <div class="sheet" role="menu">
-        <button type="button" class="sheet-item" data-action="export">Markdown でエクスポート</button>
-        <button type="button" class="sheet-item" data-action="rename">名前を変更</button>
-        <button type="button" class="sheet-item sheet-item-cancel" data-action="cancel">キャンセル</button>
-      </div>
-    `
-    function close(): void {
-      overlay.remove()
-      resolve()
-    }
-    overlay.addEventListener('click', async (e) => {
-      const target = e.target as HTMLElement
-      const action = target.dataset.action
-      if (!action) {
-        if (e.target === overlay) close()
-        return
-      }
-      close()
-      if (action === 'export') await actions.onExport()
-      else if (action === 'rename') await actions.onRename()
-    })
-    document.body.appendChild(overlay)
-  })
 }
 
 function updateIndicator(el: HTMLElement, status: AutosaveStatus): void {
