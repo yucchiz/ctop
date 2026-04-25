@@ -3,6 +3,7 @@ import type { Folder } from '../types'
 import { openConfirm, openPrompt } from './dialog'
 import { navigate } from './router'
 import { showToast } from './toast'
+import { renderVersionBadge } from './versionBadge'
 
 function formatRelative(ts: number): string {
   const diff = Date.now() - ts
@@ -31,6 +32,7 @@ export async function renderFolderList(root: HTMLElement): Promise<void> {
     <header class="app-header">
       <h1>CtoP</h1>
       <button type="button" class="btn-primary" id="btn-new-folder">＋ 新規</button>
+      ${renderVersionBadge()}
     </header>
     <main class="app-main folder-list-main">
       ${

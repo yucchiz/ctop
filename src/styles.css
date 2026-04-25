@@ -73,6 +73,15 @@ textarea {
   flex: 1;
 }
 
+.version-badge {
+  font-size: 0.7rem;
+  color: var(--fg-muted);
+  opacity: 0.7;
+  letter-spacing: 0.02em;
+  pointer-events: none;
+  user-select: none;
+}
+
 /* Folder list */
 .folder-list-main {
   flex: 1;

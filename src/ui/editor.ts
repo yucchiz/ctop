@@ -6,6 +6,7 @@ import { openPrompt } from './dialog'
 import { attachKeyboardInsetTracker } from './keyboardInset'
 import { navigate } from './router'
 import { showToast } from './toast'
+import { renderVersionBadge } from './versionBadge'
 
 export interface EditorHandle {
   dispose(): void
@@ -25,6 +26,7 @@ export async function renderEditor(root: HTMLElement, folderId: string): Promise
       <button type="button" class="folder-title" id="folder-title"></button>
       <span class="save-indicator" id="save-indicator" aria-live="polite"></span>
       <button type="button" class="btn-menu" id="btn-export" aria-label="エクスポート">⬇</button>
+      ${renderVersionBadge()}
     </header>
     <main class="app-main editor-main">
       <textarea id="editor" spellcheck="false" placeholder="ここにテキストを入力・ペーストしてください…"></textarea>
