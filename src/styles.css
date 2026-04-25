@@ -206,7 +206,7 @@ textarea {
 .fab-paste {
   position: fixed;
   right: calc(env(safe-area-inset-right) + 1rem);
-  bottom: calc(env(safe-area-inset-bottom) + 1rem + var(--kb-inset, 0px));
+  bottom: calc(env(safe-area-inset-bottom) + 1rem + var(--kb-extra, 0px) + var(--kb-inset, 0px));
   width: 56px;
   height: 56px;
   border-radius: 50%;

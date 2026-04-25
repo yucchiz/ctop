@@ -37,6 +37,7 @@ beforeEach(() => {
 
 afterEach(() => {
   document.documentElement.style.removeProperty('--kb-inset')
+  document.documentElement.style.removeProperty('--kb-extra')
   if (ORIGINAL_VV) {
     Object.defineProperty(window, 'visualViewport', ORIGINAL_VV)
   } else {
@@ -106,5 +107,27 @@ describe('attachKeyboardInsetTracker', () => {
     const tracker = attachKeyboardInsetTracker()
     expect(document.documentElement.style.getPropertyValue('--kb-inset')).toBe('')
     expect(() => tracker.dispose()).not.toThrow()
+  })
+
+  it('sets --kb-extra to 0.75rem when the keyboard is visible', () => {
+    installVisualViewport({ height: 500 })
+    const tracker = attachKeyboardInsetTracker()
+    expect(document.documentElement.style.getPropertyValue('--kb-extra')).toBe('0.75rem')
+    tracker.dispose()
+  })
+
+  it('sets --kb-extra to 0px when the keyboard is hidden', () => {
+    installVisualViewport({ height: 800 })
+    const tracker = attachKeyboardInsetTracker()
+    expect(document.documentElement.style.getPropertyValue('--kb-extra')).toBe('0px')
+    tracker.dispose()
+  })
+
+  it('clears --kb-extra on dispose', () => {
+    installVisualViewport({ height: 500 })
+    const tracker = attachKeyboardInsetTracker()
+    expect(document.documentElement.style.getPropertyValue('--kb-extra')).toBe('0.75rem')
+    tracker.dispose()
+    expect(document.documentElement.style.getPropertyValue('--kb-extra')).toBe('')
   })
 })
