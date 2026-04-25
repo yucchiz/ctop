@@ -197,7 +197,7 @@ textarea {
 .fab-paste {
   position: fixed;
   right: calc(env(safe-area-inset-right) + 1rem);
-  bottom: calc(env(safe-area-inset-bottom) + 1rem);
+  bottom: calc(env(safe-area-inset-bottom) + 1rem + var(--kb-inset, 0px));
   width: 56px;
   height: 56px;
   border-radius: 50%;
@@ -209,7 +209,9 @@ textarea {
   align-items: center;
   justify-content: center;
   z-index: 10;
-  transition: transform 0.1s ease-out;
+  transition:
+    transform 0.1s ease-out,
+    bottom 120ms ease-out;
 }
 
 .fab-paste:active {

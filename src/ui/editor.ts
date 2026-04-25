@@ -3,6 +3,7 @@ import { createAutosaver, type AutosaveStatus } from '../features/autosave'
 import { exportFolder } from '../features/exportMd'
 import { appendWithNewline, readClipboard } from '../features/paste'
 import { openPrompt } from './dialog'
+import { attachKeyboardInsetTracker } from './keyboardInset'
 import { navigate } from './router'
 import { showToast } from './toast'
 
@@ -75,10 +76,18 @@ export async function renderEditor(root: HTMLElement, folderId: string): Promise
         showToast('クリップボードが空です')
         break
       case 'denied':
-        showToast('クリップボード読み取りが拒否されました。長押しペーストをご利用ください', 'error', 4000)
+        showToast(
+          'クリップボード読み取りが拒否されました。長押しペーストをご利用ください',
+          'error',
+          4000,
+        )
         break
       case 'unsupported':
-        showToast('このブラウザはクリップボード読取に対応していません。長押しペーストをご利用ください', 'error', 4000)
+        showToast(
+          'このブラウザはクリップボード読取に対応していません。長押しペーストをご利用ください',
+          'error',
+          4000,
+        )
         break
       case 'error':
         showToast(`読み取りに失敗しました: ${result.message}`, 'error', 4000)
@@ -116,10 +125,13 @@ export async function renderEditor(root: HTMLElement, folderId: string): Promise
   }
   window.addEventListener('beforeunload', onBeforeUnload)
 
+  const keyboardTracker = attachKeyboardInsetTracker()
+
   return {
     dispose: () => {
       textarea.removeEventListener('input', onInput)
       window.removeEventListener('beforeunload', onBeforeUnload)
+      keyboardTracker.dispose()
       void autosaver.flush()
     },
   }
