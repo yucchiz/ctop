@@ -1,6 +1,6 @@
 const CSS_VAR = '--kb-inset'
 const EXTRA_VAR = '--kb-extra'
-const EXTRA_WHEN_VISIBLE = '0.75rem'
+const EXTRA_WHEN_VISIBLE = '3.25rem'
 const EXTRA_WHEN_HIDDEN = '0px'
 
 export interface KeyboardInsetTracker {

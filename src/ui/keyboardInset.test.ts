@@ -112,7 +112,7 @@ describe('attachKeyboardInsetTracker', () => {
   it('sets --kb-extra to 0.75rem when the keyboard is visible', () => {
     installVisualViewport({ height: 500 })
     const tracker = attachKeyboardInsetTracker()
-    expect(document.documentElement.style.getPropertyValue('--kb-extra')).toBe('0.75rem')
+    expect(document.documentElement.style.getPropertyValue('--kb-extra')).toBe('3.25rem')
     tracker.dispose()
   })
 
@@ -126,7 +126,7 @@ describe('attachKeyboardInsetTracker', () => {
   it('clears --kb-extra on dispose', () => {
     installVisualViewport({ height: 500 })
     const tracker = attachKeyboardInsetTracker()
-    expect(document.documentElement.style.getPropertyValue('--kb-extra')).toBe('0.75rem')
+    expect(document.documentElement.style.getPropertyValue('--kb-extra')).toBe('3.25rem')
     tracker.dispose()
     expect(document.documentElement.style.getPropertyValue('--kb-extra')).toBe('')
   })

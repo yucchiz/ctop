@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Project context
+
+CtoP is a local-only PWA hosted on GitHub Pages (`https://yucchiz.github.io/ctop/`). The intended flow is: copy text from paper via iOS Live Text → open CtoP → tap the FAB to append clipboard contents to the current folder. There is **no cloud sync** and no backend — all data lives in the user's browser IndexedDB. Export to Markdown (Web Share / download fallback) is the only way data leaves the device. Keep this single-device, append-mostly model in mind when proposing features.
+
 ## Commands
 
 ```sh
@@ -58,4 +62,6 @@ Builds Markdown with a YAML frontmatter (title/createdAt/updatedAt) and tries We
 - **Strict TS**: `noUnusedLocals`, `noUnusedParameters`, `noFallthroughCasesInSwitch`, `noUncheckedSideEffectImports`. Unused imports/params will fail `npm run typecheck` and break CI.
 - **Prettier**: no semicolons, single quotes, trailing commas all, 100-col, always-parens arrows. Don't reformat against this style.
 - **No frontend framework**: rendering is `root.innerHTML = …` template strings followed by `querySelector` event wiring (see `folderList.ts` / `editor.ts`). User-supplied strings must be escaped — `escapeHtml` in `folderList.ts` is the existing helper.
+- **Icon regeneration is manual**: editing `public/pwa-icon.svg` does NOT automatically refresh the PNGs. Run `npm run generate-icons` and commit the SVG together with the regenerated `pwa-{64,192,512}.png`, `maskable-icon-512x512.png`, `apple-touch-icon-180x180.png`, and `favicon.ico`. CI does not regenerate them.
+- **First-run bootstrap**: `boot()` in `src/main.ts` creates a default folder named `メモ` when `listFolders()` returns empty. The app assumes at least one folder exists; don't remove this guard without revisiting the empty-state UX.
 - Comments and commit messages in this repo are in Japanese; user-facing strings are Japanese.
