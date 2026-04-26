@@ -1,15 +1,15 @@
 :root {
-  --bg: #0f172a;
-  --bg-elev: #1e293b;
-  --bg-elev2: #273449;
-  --fg: #e2e8f0;
-  --fg-muted: #94a3b8;
-  --accent: #38bdf8;
-  --accent-fg: #0f172a;
-  --danger: #f87171;
-  --border: rgba(148, 163, 184, 0.2);
+  --bg: #faf7ee;
+  --bg-elev: #f3ecdb;
+  --bg-elev2: #e8dfc8;
+  --fg: #111111;
+  --fg-muted: #6b6557;
+  --accent: #2563eb;
+  --accent-fg: #ffffff;
+  --danger: #dc2626;
+  --border: rgba(0, 0, 0, 0.12);
   --radius: 12px;
-  color-scheme: dark;
+  color-scheme: light;
   font-family:
     -apple-system, BlinkMacSystemFont, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic',
     sans-serif;
@@ -167,14 +167,15 @@ textarea {
 
 .btn-menu {
   padding: 0 0.6rem;
-  font-size: 1.3rem;
-  color: var(--fg-muted);
-  min-width: 40px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--accent);
+  min-width: 44px;
   min-height: 40px;
 }
 
 .save-saved {
-  color: #22c55e;
+  color: #16a34a;
 }
 
 .save-error {
@@ -211,9 +212,7 @@ textarea {
   height: 56px;
   border-radius: 50%;
   background: var(--accent);
-  color: var(--accent-fg);
-  font-size: 1.4rem;
-  box-shadow: 0 6px 16px rgba(56, 189, 248, 0.35);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -268,10 +267,10 @@ textarea {
   max-width: 100%;
   padding: 0.6rem 1rem;
   border-radius: var(--radius);
-  background: rgba(30, 41, 59, 0.95);
-  color: var(--fg);
+  background: rgba(40, 40, 40, 0.92);
+  color: #ffffff;
   font-size: 0.88rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.18);
   opacity: 0;
   transform: translateY(12px);
   transition:
@@ -285,7 +284,8 @@ textarea {
 }
 
 .toast-error {
-  background: rgba(127, 29, 29, 0.95);
+  background: rgba(153, 27, 27, 0.95);
+  color: #ffffff;
 }
 
 /* Dialog */
@@ -377,7 +377,7 @@ textarea {
 
 .dialog-btn-destructive {
   background: var(--danger);
-  color: #450a0a;
+  color: #ffffff;
 }
 
 /* Action sheet */

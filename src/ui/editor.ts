@@ -25,14 +25,12 @@ export async function renderEditor(root: HTMLElement, folderId: string): Promise
       <button type="button" class="btn-ghost" id="btn-back" aria-label="戻る">‹ 戻る</button>
       <button type="button" class="folder-title" id="folder-title"></button>
       <span class="save-indicator" id="save-indicator" aria-live="polite"></span>
-      <button type="button" class="btn-menu" id="btn-export" aria-label="エクスポート">⬇</button>
+      <button type="button" class="btn-menu" id="btn-export" aria-label="共有">共有</button>
       ${renderVersionBadge()}
     </header>
     <main class="app-main editor-main">
       <textarea id="editor" spellcheck="false" placeholder="ここにテキストを入力・ペーストしてください…"></textarea>
-      <button type="button" class="fab-paste" id="btn-paste" aria-label="クリップボードから追記">
-        <span aria-hidden="true">📋</span>
-      </button>
+      <button type="button" class="fab-paste" id="btn-paste" aria-label="クリップボードから追記"></button>
     </main>
   `
 
